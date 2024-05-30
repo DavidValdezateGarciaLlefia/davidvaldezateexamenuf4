@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { GlobalContext } from '../context/GlobalContext';
-
-const ModalForm = ({ isOpen, onClose, initialData, onSubmit }) => {
+const ModalForm = ({ isOpen, onClose, initialData }) => {
+  const [formData, setFormData] = useState(initialData);
   const { editarHistoria, agregarHistoria } = useContext(GlobalContext);
-  const [formData, setFormData] = React.useState(initialData);
 
-  React.useEffect(() => {
-    setFormData(initialData);
+  useEffect(() => {
+    setFormData(initialData); // Ensures formData is updated when initialData changes
   }, [initialData]);
 
   const handleChange = (e) => {
@@ -19,21 +18,21 @@ const ModalForm = ({ isOpen, onClose, initialData, onSubmit }) => {
 
   const handleSubmit = () => {
     if (formData.id) {
-      editarHistoria(formData.id, formData);
+      editarHistoria(formData.id, formData); // Edit existing story
     } else {
-      agregarHistoria(formData);
+      agregarHistoria(formData); // Add new story
     }
-    onClose(); // Cerrar el modal después de enviar los datos
+    onClose(); // Close the modal after submission
   };
 
   return (
     <Modal show={isOpen} onHide={onClose}>
       <Modal.Header closeButton>
-        <Modal.Title>{formData.id ? 'Edit Story' : 'New Story'}</Modal.Title>
+        <Modal.Title>{formData.id ? `Edit Story: ${formData.titulo}` : 'New Story'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
@@ -43,7 +42,7 @@ const ModalForm = ({ isOpen, onClose, initialData, onSubmit }) => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>Date</Form.Label>
             <Form.Control
               type="text"
@@ -53,7 +52,7 @@ const ModalForm = ({ isOpen, onClose, initialData, onSubmit }) => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>Comment</Form.Label>
             <Form.Control
               as="textarea"
@@ -64,7 +63,7 @@ const ModalForm = ({ isOpen, onClose, initialData, onSubmit }) => {
               onChange={handleChange}
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="mb-3">
             <Form.Label>Image URL</Form.Label>
             <Form.Control
               type="text"
@@ -78,7 +77,9 @@ const ModalForm = ({ isOpen, onClose, initialData, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>Close</Button>
-        <Button variant="primary" onClick={handleSubmit}>Save Changes</Button>
+        <Button variant="primary" onClick={handleSubmit}>
+          {formData.id ? 'Edit' : 'Create'}
+        </Button>
       </Modal.Footer>
     </Modal>
   );
