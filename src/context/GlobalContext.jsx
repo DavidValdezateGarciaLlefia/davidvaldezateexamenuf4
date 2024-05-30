@@ -6,14 +6,14 @@ export const GlobalContextProvider = ({ children }) => {
     const [historias, setHistorias] = useState([]);
 
     useEffect(() => {
-        fetch('https://davidvaldezatejsonapirest.vercel.app/historias')
+        fetch('https://davidvaldezatejsonserver.vercel.app/historias')
             .then(response => response.json())
             .then(data => setHistorias(data))
             .catch(error => console.error('Error fetching historias:', error));
     }, []);
 
     const agregarHistoria = (nuevaHistoria) => {
-        fetch('https://davidvaldezatejsonapirest.vercel.app/historias', {
+        fetch('https://davidvaldezatejsonserver.vercel.app/historias', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ export const GlobalContextProvider = ({ children }) => {
     };
 
     const editarHistoria = (id, datosActualizados) => {
-        fetch(`https://davidvaldezatejsonapirest.vercel.app/historias/${id}`, {
+        fetch(`https://davidvaldezatejsonserver.vercel.app/historias/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export const GlobalContextProvider = ({ children }) => {
     };
 
     const borrarHistoria = (id) => {
-        fetch(`https://davidvaldezatejsonapirest.vercel.app/historias/${id}`, {
+        fetch(`https://davidvaldezatejsonserver.vercel.app/historias/${id}`, {
             method: 'DELETE'
         })
             .then(() => {
