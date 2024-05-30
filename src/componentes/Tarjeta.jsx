@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Button } from "react-bootstrap";
 import { Pencil, Trash2 } from 'lucide-react';
 import ModalForm from './Modal';
@@ -10,17 +10,23 @@ export function Tarjeta({ historia }) {
 
     const { editarHistoria, borrarHistoria } = useContext(GlobalContext);
 
+    useEffect(() => {
+        setUpdatedData({ ...historia });
+    }, [historia]);
+
     const abrirModal = () => { 
         setIsModalOpen(true);
     };
 
-    const cerrarModal = () => setIsModalOpen(false);
+    const cerrarModal = () => {
+        setIsModalOpen(false);
+    };
 
     const handleUpdate = (formData) => {
         editarHistoria(historia.id, formData);
-        setUpdatedData(formData);  // Update the displayed data in the card
         cerrarModal();
     };
+
 
     return (
         <div className="m-0.5">
